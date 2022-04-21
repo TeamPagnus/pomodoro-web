@@ -15,6 +15,7 @@ function convertToClock(seconds) {
 }
 
 async function main() {
+    var title = document.getElementById("title");
     var timer = document.getElementById("timer");
     var seconds;
     var secondsLeft;
@@ -27,12 +28,14 @@ async function main() {
             if (secondsLeft == 1) {
                 audio.play();
             }
+            title.innerHTML = convertToClock(secondsLeft) + " work";
             timer.innerHTML = convertToClock(secondsLeft) + " work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
             if (secondsLeft == 1) {
                 audio.play();
             }
+            title.innerHTML = convertToClock(secondsLeft) + " break";
             timer.innerHTML = convertToClock(secondsLeft) + " break";
         }
         await sleep(1000);
