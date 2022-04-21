@@ -24,13 +24,13 @@ async function main() {
         seconds = Math.floor(timestamp / 1000);
         if (isWorkingState(seconds)) {
             secondsLeft = workPeriod - (seconds % fullPeriod);
-            if (secondsLeft == 0) {
+            if (secondsLeft == 1) {
                 audio.play();
             }
             timer.innerHTML = convertToClock(secondsLeft) + " Work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
-            if (secondsLeft == 0) {
+            if (secondsLeft == 1) {
                 audio.play();
             }
             timer.innerHTML = convertToClock(secondsLeft) + " Break";
@@ -39,4 +39,6 @@ async function main() {
     }
 }
 
+var audio = new Audio();
+audio.play();
 main();
