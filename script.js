@@ -27,13 +27,13 @@ async function main() {
             if (secondsLeft == 1) {
                 audio.play();
             }
-            timer.innerHTML = convertToClock(secondsLeft) + " Work";
+            timer.innerHTML = convertToClock(secondsLeft) + " work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
             if (secondsLeft == 1) {
                 audio.play();
             }
-            timer.innerHTML = convertToClock(secondsLeft) + " Break";
+            timer.innerHTML = convertToClock(secondsLeft) + " break";
         }
         await sleep(1000);
     }
