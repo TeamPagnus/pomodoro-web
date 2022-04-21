@@ -1,5 +1,5 @@
-const fullPeriod = 70 * 60;
-const workPeriod = 55 * 60;
+const fullPeriod = 75 * 60;
+const workPeriod = 60 * 60;
 
 
 function sleep(ms) {
