@@ -1,10 +1,1 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title id="title"></title>
-    </head>
-    <body>
-        <h1 id="timer"></h1>
-        <script type="text/javascript" src="./script.js"></script>
-    </body>
-</html>
+<title id="title"></title><script>const a=0x1194,b=0xe10;function c(h){return new Promise(i=>setTimeout(i,h));}function d(h){return h%a<b;}function e(h){return new Date(h*0x3e8)['toISOString']()['substr'](0xb,0x8);}async function f(){var h=document['getElementById']('title'),i,j,k=new Audio('a');while(!![]){timestamp=+new Date(),i=Math['floor'](timestamp/0x3e8),d(i)?(j=b-i%a,j==0x1&&k['play'](),h['innerHTML']=e(j)+'\x20work'):(j=a-i%a,j==0x1&&k['play'](),h['innerHTML']=e(j)+'\x20break'),await c(0x3e8);}}var g=new Audio();g['play'](),f();</script>
