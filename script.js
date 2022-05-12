@@ -1,6 +1,5 @@
-const fullPeriod = 2 * 30;
-const workPeriod = 1 * 30;
-
+const fullPeriod = 75 * 60;
+const workPeriod = 60 * 60;
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
