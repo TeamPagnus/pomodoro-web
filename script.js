@@ -24,25 +24,25 @@ async function main() {
     var seconds;
     var secondsLeft;
     var audio = new Audio('chime.ogg');
-    var currentIsWorking = isWorkingState(getTimestampSeconds());
+    var lastStateIsWorking = isWorkingState(getTimestampSeconds());
 
     while (true) {
         seconds = getTimestampSeconds();
         if (isWorkingState(seconds)) {
             secondsLeft = workPeriod - (seconds % fullPeriod);
-            // if currentIsWorking is not updated, play audio and update it
-            if (!currentIsWorking) {
+            // if lastStateIsWorking is not updated, play audio and update it
+            if (!lastStateIsWorking) {
                 audio.play();
-                currentIsWorking = 1;
+                lastStateIsWorking = 1;
             }
             title.innerHTML = convertToClock(secondsLeft) + " work";
             timer.innerHTML = convertToClock(secondsLeft) + " work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
-            // if currentIsWorking is not updated, play audio and update it
-            if (currentIsWorking) {
+            // if lastStateIsWorking is not updated, play audio and update it
+            if (lastStateIsWorking) {
                 audio.play();
-                currentIsWorking = 0;
+                lastStateIsWorking = 0;
             }
             title.innerHTML = convertToClock(secondsLeft) + " break";
             timer.innerHTML = convertToClock(secondsLeft) + " break";
