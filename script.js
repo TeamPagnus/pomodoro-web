@@ -23,17 +23,24 @@ async function main() {
     while (true) {
         timestamp = +new Date();
         seconds = Math.floor(timestamp / 1000);
+        // current 0 means working state
+        // current 1 means free state
+        current = 0;
         if (isWorkingState(seconds)) {
             secondsLeft = workPeriod - (seconds % fullPeriod);
-            if (secondsLeft == 1) {
+            // if current is free play audio and change current state
+            if (current) {
                 audio.play();
+                current = 0;
             }
             title.innerHTML = convertToClock(secondsLeft) + " work";
             timer.innerHTML = convertToClock(secondsLeft) + " work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
-            if (secondsLeft == 1) {
+            // if current is work play audio and change current state
+            if (!current) {
                 audio.play();
+                current = 1;
             }
             title.innerHTML = convertToClock(secondsLeft) + " break";
             timer.innerHTML = convertToClock(secondsLeft) + " break";
