@@ -31,7 +31,7 @@ async function main() {
         seconds = getTimestampSeconds();
         if (isWorkingState(seconds)) {
             secondsLeft = workPeriod - (seconds % fullPeriod);
-            // if current is free play audio and change current state
+            // if currentIsWorking is not updated, play audio and update it
             if (!currentIsWorking) {
                 audio.play();
                 currentIsWorking = 1;
@@ -40,7 +40,7 @@ async function main() {
             timer.innerHTML = convertToClock(secondsLeft) + " work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
-            // if current is work play audio and change current state
+            // if currentIsWorking is not updated, play audio and update it
             if (currentIsWorking) {
                 audio.play();
                 currentIsWorking = 0;
@@ -49,8 +49,7 @@ async function main() {
             timer.innerHTML = convertToClock(secondsLeft) + " break";
         }
         await sleep(1000);
-    }
-}
+    }}
 
 var audio = new Audio();
 audio.play();
