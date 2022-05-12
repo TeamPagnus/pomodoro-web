@@ -49,7 +49,8 @@ async function main() {
             timer.innerHTML = convertToClock(secondsLeft) + " break";
         }
         await sleep(1000);
-    }}
+    }
+}
 
 var audio = new Audio();
 audio.play();
