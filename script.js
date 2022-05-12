@@ -24,8 +24,7 @@ async function main() {
     var seconds;
     var secondsLeft;
     var audio = new Audio('chime.ogg');
-
-    currentIsWorking = isWorkingState(getTimestampSeconds());
+    var currentIsWorking = isWorkingState(getTimestampSeconds());
 
     while (true) {
         seconds = getTimestampSeconds();
