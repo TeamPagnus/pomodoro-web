@@ -1,5 +1,6 @@
-const fullPeriod = 75 * 60;
-const workPeriod = 60 * 60;
+const fullPeriod = 2 * 30;
+const workPeriod = 1 * 30;
+
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -25,27 +26,25 @@ async function main() {
     var secondsLeft;
     var audio = new Audio('chime.ogg');
 
-    // current 0 means free state
-    // current 1 means working state
-    current = isWorkingState(getTimestampSeconds());
+    currentIsWorking = isWorkingState(getTimestampSeconds());
 
     while (true) {
         seconds = getTimestampSeconds();
         if (isWorkingState(seconds)) {
             secondsLeft = workPeriod - (seconds % fullPeriod);
             // if current is free play audio and change current state
-            if (!current) {
+            if (!currentIsWorking) {
                 audio.play();
-                current = 1;
+                currentIsWorking = 1;
             }
             title.innerHTML = convertToClock(secondsLeft) + " work";
             timer.innerHTML = convertToClock(secondsLeft) + " work";
         } else {
             secondsLeft = fullPeriod - (seconds % fullPeriod);
             // if current is work play audio and change current state
-            if (current) {
+            if (currentIsWorking) {
                 audio.play();
-                current = 0;
+                currentIsWorking = 0;
             }
             title.innerHTML = convertToClock(secondsLeft) + " break";
             timer.innerHTML = convertToClock(secondsLeft) + " break";
