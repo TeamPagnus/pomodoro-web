@@ -1,5 +1,24 @@
-const fullPeriod = 75 * 60;
-const workPeriod = 60 * 60;
+const restMinutes = 15;
+const workMinutes = 60;
+const restPeriod = restMinutes * 60;
+const workPeriod = workMinutes * 60;
+const fullPeriod = restPeriod + workPeriod;
+
+function getVolume() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var v = Number(urlParams.get('v'));
+    if (isNaN(v)) {
+        v = 100;
+    }
+    if (vol < 0) {
+        v = 0;
+    }
+    if (vol > 100) {
+        v = 100;
+    }
+    return v;
+}
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,6 +43,7 @@ async function main() {
     var seconds;
     var secondsLeft;
     var audio = new Audio('chime.ogg');
+    audio.volume = getVolume() / 100;
     var lastStateIsWorking = isWorkingState(getTimestampSeconds());
 
     while (true) {
