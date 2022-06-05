@@ -1,0 +1,22 @@
+{
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "mounts": [
+        "source=pagnus-pomodoro-web-volume,target=/home/dev/.vscode-server/extensions,type=volume"
+    ],
+    "remoteUser": "dev",
+    "forwardPorts": [
+        9000
+    ],
+    "settings": {
+        "remote.autoForwardPorts": false
+    },
+	"postStartCommand": "python3 -m http.server 9000",
+	"extensions": [
+		"abusaidm.html-snippets",
+		"bianxianyang.htmlplay",
+		"dbaeumer.jshint",
+		"ecmel.vscode-html-css"
+	]
+}
