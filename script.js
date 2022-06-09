@@ -11,10 +11,10 @@ function getVolume() {
     if (isNaN(v)) {
         v = 100;
     }
-    if (vol < 0) {
+    if (v < 0) {
         v = 0;
     }
-    if (vol > 100) {
+    if (v > 100) {
         v = 100;
     }
     return v;
