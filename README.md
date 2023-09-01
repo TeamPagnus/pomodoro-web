@@ -9,7 +9,8 @@ Ahora esta publicado en cloudflare. Deploy:
 
 ```
 docker run -it --rm -v $(pwd):/data node bash
-mkdir build && cd build
+cd data && mkdir build && cd build
+cp ../.env .
 yarn add --dev wrangler
 node_modules/.bin/wrangler pages project list
 node_modules/.bin/wrangler pages publish ../src/ --project-name=pagnus
