@@ -48,3 +48,21 @@ body, html {
 .version:hover {
     color: grey;
 }
+
+#triangulo {
+    width: 0;
+    height: 0;
+    border-left: 10vmin solid transparent;
+    border-right: 10vmin solid transparent;
+    border-bottom: 20vmin solid white;
+    transform: rotate(90deg);
+    position: relative;
+}
+
+#triangulo:hover {
+    border-bottom-color: gray;
+}
+
+.hide {
+    display: none;
+}

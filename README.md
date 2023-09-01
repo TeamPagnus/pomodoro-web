@@ -13,7 +13,7 @@ cd data && mkdir build && cd build
 cp ../.env .
 yarn add --dev wrangler
 node_modules/.bin/wrangler pages project list
-node_modules/.bin/wrangler pages publish ../src/ --project-name=pagnus
+node_modules/.bin/wrangler pages publish ../src/ --project-name=pomodoro-pagnus
 
 ```
 

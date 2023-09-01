@@ -82,8 +82,9 @@ async function main() {
 }
 
 async function pedir_interaccion() {
-    var timer = document.getElementById("timer");
-    timer.onclick = function (ev) {
+    var triangulo = document.getElementById("triangulo");
+    triangulo.onclick = function (ev) {
+        triangulo.classList.add("hide")
         console.log("click")
         main()
     }
@@ -94,6 +95,8 @@ var promise = audiotest.play();
 if (promise !== undefined) {
     promise.then(_ => {
         console.log('autoplay enabled')
+        var triangulo = document.getElementById("triangulo");
+        triangulo.classList.add("hide")
         main()
 
     }).catch(error => {
