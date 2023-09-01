@@ -1,5 +1,5 @@
 const restMinutes = 15;
-const workMinutes = 60;
+const workMinutes = 45;
 const restPeriod = restMinutes * 60;
 const workPeriod = workMinutes * 60;
 const fullPeriod = restPeriod + workPeriod;
@@ -38,12 +38,12 @@ function getTimestampSeconds() {
 }
 
 async function main() {
+
     var title = document.getElementById("title");
     var timer = document.getElementById("timer");
     var seconds;
     var secondsLeft;
-    var audio = new Audio('chime.ogg');
-    audio.volume = getVolume() / 100;
+    var audio = new Audio('chime.mp3');
     var lastStateIsWorking = isWorkingState(getTimestampSeconds());
 
     while (true) {
@@ -52,7 +52,17 @@ async function main() {
             secondsLeft = workPeriod - (seconds % fullPeriod);
             // if lastStateIsWorking is not updated, play audio and update it
             if (!lastStateIsWorking) {
-                audio.play();
+                var promise = audio.play();
+                if (promise !== undefined) {
+                    promise.then(_ => {
+                        console.log('play good')
+                    }).catch(error => {
+                
+                        console.log('error')
+                        console.log(error)
+                    });
+                }
+                
                 lastStateIsWorking = 1;
             }
             title.innerHTML = convertToClock(secondsLeft) + " work";
@@ -71,6 +81,27 @@ async function main() {
     }
 }
 
-var audio = new Audio();
-audio.play();
-main();
+async function pedir_interaccion() {
+    var timer = document.getElementById("timer");
+    timer.onclick = function (ev) {
+        console.log("click")
+        main()
+    }
+}
+
+var audiotest = new Audio('silence.mp3');
+var promise = audiotest.play();
+if (promise !== undefined) {
+    promise.then(_ => {
+        console.log('autoplay enabled')
+        main()
+
+    }).catch(error => {
+
+        console.log('error')
+        console.log(error)
+
+        pedir_interaccion()
+
+    });
+}
