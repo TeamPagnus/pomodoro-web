@@ -1,110 +1,96 @@
 const restMinutes = 15;
-const workMinutes = 45;
+const workMinutes = 45  ;
 const restPeriod = restMinutes * 60;
 const workPeriod = workMinutes * 60;
 const fullPeriod = restPeriod + workPeriod;
 
-function getVolume() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var v = Number(urlParams.get('v'));
-    if (isNaN(v)) {
-        v = 100;
-    }
-    if (v < 0) {
-        v = 0;
-    }
-    if (v > 100) {
-        v = 100;
-    }
-    return v;
-}
+const WORK_STATE = "work"
+const BREAK_STATE = "break"
+const SILENCE_AUDIO_PATH = "silence.mp3"
+const CHIME_AUDIO_PATH = "chime.mp3"
 
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const PLAY_DOM_ID = "triangulo"
+const CLOCK_DOM_ID = "timer"
+const TITLE_DOM_ID = "title"
 
-function isWorkingState(seconds) {
-    return seconds % fullPeriod < workPeriod;
-}
+const HIDE_DOM_CLASS = "hide"
 
-function convertToClock(seconds) {
-    return new Date(seconds * 1000).toISOString().substr(14, 5);
-}
-
-function getTimestampSeconds() {
-    timestamp = +new Date();
-    return Math.floor(timestamp / 1000);
-}
-
-async function main() {
-
-    var title = document.getElementById("title");
-    var timer = document.getElementById("timer");
-    var seconds;
-    var secondsLeft;
-    var audio = new Audio('chime.mp3');
-    var lastStateIsWorking = isWorkingState(getTimestampSeconds());
-
-    while (true) {
-        seconds = getTimestampSeconds();
-        if (isWorkingState(seconds)) {
-            secondsLeft = workPeriod - (seconds % fullPeriod);
-            // if lastStateIsWorking is not updated, play audio and update it
-            if (!lastStateIsWorking) {
-                var promise = audio.play();
-                if (promise !== undefined) {
-                    promise.then(_ => {
-                        console.log('play good')
-                    }).catch(error => {
-                
-                        console.log('error')
-                        console.log(error)
-                    });
-                }
-                
-                lastStateIsWorking = 1;
-            }
-            title.innerHTML = convertToClock(secondsLeft) + " work";
-            timer.innerHTML = convertToClock(secondsLeft) + " work";
-        } else {
-            secondsLeft = fullPeriod - (seconds % fullPeriod);
-            // if lastStateIsWorking is not updated, play audio and update it
-            if (lastStateIsWorking) {
-                audio.play();
-                lastStateIsWorking = 0;
-            }
-            title.innerHTML = convertToClock(secondsLeft) + " break";
-            timer.innerHTML = convertToClock(secondsLeft) + " break";
-        }
-        await sleep(1000);
-    }
-}
-
-async function pedir_interaccion() {
-    var triangulo = document.getElementById("triangulo");
-    triangulo.onclick = function (ev) {
-        triangulo.classList.add("hide")
-        console.log("click")
-        main()
-    }
-}
-
-var audiotest = new Audio('silence.mp3');
-var promise = audiotest.play();
-if (promise !== undefined) {
-    promise.then(_ => {
-        console.log('autoplay enabled')
-        var triangulo = document.getElementById("triangulo");
-        triangulo.classList.add("hide")
-        main()
-
-    }).catch(error => {
-
-        console.log('error')
-        console.log(error)
-
-        pedir_interaccion()
-
+async function isAutoplayEnabled() {
+    var audiotest = new Audio(SILENCE_AUDIO_PATH);
+    return audiotest.play()
+    .then(_ => {
+        return true;
+    }).catch(_ => {
+        return false
     });
 }
+
+function getTimestamp() {
+    return Math.floor(Date.now() / 1000);
+}
+
+function getStateAndSecondsLeft(seconds) {
+    if (seconds % fullPeriod < workPeriod) {
+        return [WORK_STATE, workPeriod - (seconds % fullPeriod)]
+    }
+    return [BREAK_STATE, fullPeriod - (seconds % fullPeriod)];
+}
+
+function isStateChange(state) {
+    var timer = document.getElementById(CLOCK_DOM_ID);
+    if (timer.innerHTML.includes(WORK_STATE)){
+        return state != WORK_STATE;
+    } else if (timer.innerHTML.includes(BREAK_STATE)){
+        return state != BREAK_STATE;
+    }
+    return false
+}
+
+function playSound() {
+    var audio = new Audio(CHIME_AUDIO_PATH);
+    audio.play();
+}
+
+function updateClockString(secondsLeft, state) {
+    var title = document.getElementById(TITLE_DOM_ID);
+    var timer = document.getElementById(CLOCK_DOM_ID);
+    timeFormated = new Date(secondsLeft * 1000).toISOString().slice(14, 19);
+    formatedString = timeFormated + " " + state
+    title.innerHTML = formatedString;
+    timer.innerHTML = formatedString;
+}
+
+function renderTimer() {
+    seconds = getTimestamp();
+    stateAndSecondsLeft = getStateAndSecondsLeft(seconds);
+    state = stateAndSecondsLeft[0];
+    secondsLeft = stateAndSecondsLeft[1];
+    if (isStateChange(state)) {
+        playSound();
+    }
+    updateClockString(secondsLeft, state)
+}
+
+function showTimer() {
+    renderTimer()
+    window.setInterval(renderTimer, 1000);
+}
+
+function showPlayButton() {
+    var triangulo = document.getElementById(PLAY_DOM_ID);
+    triangulo.onclick = function (_) {
+        triangulo.classList.add(HIDE_DOM_CLASS);
+        showTimer();
+    }
+    triangulo.classList.remove(HIDE_DOM_CLASS);
+}
+
+// Main
+isAutoplayEnabled().then( result => {
+    console.log("Autoplay enabled:", result)
+    if (result){
+        showTimer();
+    } else {
+        showPlayButton();
+    }
+})
